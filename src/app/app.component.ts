@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'CruzSports';
-  theme = 'light-theme';
+  theme = 'dark-theme';
 }

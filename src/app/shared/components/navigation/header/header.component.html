@@ -6,19 +6,48 @@
 </div>
 <div>
   <a mat-menu-item [routerLink]="['/Home']" [routerLinkActive]="['active']">
-    <img src="assets/img/logo.png" alt="Logo" style="width: 4rem; height: 3rem;">
+    <img src="assets/img/logo.png" alt="Logo" style="width: 4rem; height: 3rem; border-radius: .6rem;">
   </a>
 </div>
+<div fxFlex fxLayout fxLayoutAlign="end">
+  <h4 >
+    <!-- <mat-form-field >
+      <input  startView="dateValue" matInput [matDatepicker]="dateValue" placeholder="Choose Date" disabled>
+      <mat-datepicker-toggle matSuffix [for]="dateValue"></mat-datepicker-toggle>
+      <mat-datepicker #dateValue disabled="false"> </mat-datepicker>
+    </mat-form-field> -->
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Choose Date"
+             (dateInput)="addEvent('input', $event)" disabled>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker disabled="false"></mat-datepicker>
+    </mat-form-field>
+  </h4>
+</div>
+<div class="example-events">
+  <div *ngFor="let e of events">{{e}}</div>
+</div>
 <div fxFlex fxLayout fxLayoutAlign="end" fxHide.xs>
-  <ul fxLayout fxLayoutGap="20px" class="navigation-items">
+  <ul fxLayout fxLayoutGap="32px" class="navigation-items">
     <li>
-        <a routerLink="/Full-Schedule">Full Schedule</a>
+        <a routerLink="/home">
+          <img src="assets/img/nav/home.png" alt="Full Schedule Title">
+        </a>
     </li>
     <li>
-        <a routerLink="/Teams">Teams</a>
+      <a routerLink="/Full-Schedule">
+        <img src="assets/img/nav/fullSched.png" alt="Full Schedule Title">
+      </a>
+  </li>
+    <li>
+        <a routerLink="/Teams">
+          <img src="assets/img/nav/teams.png" alt="Teams Title">
+        </a>
     </li>
     <li>
-        <a routerLink="/Standings">Standings</a>
+        <a routerLink="/Standings">
+          <img src="assets/img/nav/standings.png" alt="Standings Title">
+        </a>
     </li>
   </ul>
 </div>

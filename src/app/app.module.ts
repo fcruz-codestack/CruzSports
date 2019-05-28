@@ -16,6 +16,7 @@ import { StandingsComponent } from './views/standings/standings.component';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 import { HeaderComponent } from './shared/components/navigation/header/header.component';
 import { SidenavListComponent } from './shared/components/navigation/sidenav-list/sidenav-list.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { SidenavListComponent } from './shared/components/navigation/sidenav-lis
     HttpClientModule,
     ObserversModule,
     MaterialModule,
-    RoutingModule
+    RoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

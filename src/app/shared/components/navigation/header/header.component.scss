@@ -1,0 +1,39 @@
+.example-events {
+  width: 400px;
+  height: 200px;
+  border: 1px solid #555;
+  overflow: auto;
+}
+ul{
+  list-style : none
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:hover, a:active{
+  color: lightgray;
+}
+
+.mat-form-field {
+  margin-top: -2rem;
+}
+.mat-input-element:disabled, .mat-form-field-type-mat-native-select.mat-form-field-disabled .mat-form-field-infix::after {
+  color: white;
+}
+.navigation-items{
+  list-style-type: none;
+  padding: 1rem;
+  margin: 0;
+}
+
+mat-toolbar{
+  border-radius: 8px;
+}
+
+@media(max-width: 959px){
+  mat-toolbar{
+      border-radius: 0px;
+  }
+}
