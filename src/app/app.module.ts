@@ -1,30 +1,44 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LayoutModule } from '@angular/cdk/layout';
+import { MaterialModule } from './material/material.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { HttpClientModule } from '@angular/common/http';
 import { ObserversModule } from '@angular/cdk/observers';
-import { ScoreBoardComponent } from './shared/components/scoreBoard-dlySched/score-board/score-board/score-board/score-board.component';
+
+import { AppComponent } from './app.component';
+import { RoutingModule } from './routing/routing.module';
+import { LayoutComponent } from './shared/layout/layout/layout.component';
+import { ScoreBoardComponent } from './views/score-board/score-board.component';
+import { FullScheduleComponent } from './views/full-schedule/full-schedule.component';
+import { TeamsComponent } from './views/teams/teams.component';
+import { StandingsComponent } from './views/standings/standings.component';
+import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
+import { HeaderComponent } from './shared/components/navigation/header/header.component';
+import { SidenavListComponent } from './shared/components/navigation/sidenav-list/sidenav-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ScoreBoardComponent
+    PageNotFoundComponent,
+    TeamsComponent,
+    StandingsComponent,
+    FullScheduleComponent,
+    ScoreBoardComponent,
+    LayoutComponent,
+    HeaderComponent,
+    SidenavListComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
+    FlexLayoutModule,
     BrowserAnimationsModule,
-    LayoutModule,
-    ObserversModule
+    HttpClientModule,
+    ObserversModule,
+    MaterialModule,
+    RoutingModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  exports: [ScoreBoardComponent],
-  entryComponents: [ScoreBoardComponent]
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

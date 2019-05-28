@@ -1,5 +1,8 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectionStrategy } from '@angular/core';
-import { IScoreboard, IGameSummary } from 'src/app/shared/models/utils/interfaces';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import {
+  IScoreboard,
+  IGameSummary
+} from 'src/app/shared/models/utils/interfaces';
 import { Subscription } from 'rxjs';
 import { MlbIconService } from 'src/app/shared/services/mlb-icon/mlb-icon.service';
 import { DatePickerService } from 'src/app/shared/services/date-picker/date-picker.service';
@@ -8,9 +11,7 @@ import { DataApiService } from 'src/app/shared/services/data-api/data-api.servic
 @Component({
   selector: 'cs-score-board',
   templateUrl: './score-board.component.html',
-  styleUrls: ['./score-board.component.scss'],
-  encapsulation: ViewEncapsulation.ShadowDom,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./score-board.component.scss']
 })
 export class ScoreBoardComponent implements OnInit, OnDestroy {
   gamesArray: IScoreboard[] = [];
@@ -28,7 +29,7 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
     private dataService: DataApiService,
     private mlbIconService: MlbIconService,
     private dateService: DatePickerService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.gamesArray = [];
@@ -36,7 +37,7 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
     const dateSubscription = this.dateService.dateValue.subscribe(date => {
       this.selectedDate = date;
       console.log(
-        'Content-Area ngOnInit() SAYS selectedDate is ->',
+        'ScoreBoard ngOnInit() SAYS selectedDate is ->',
         this.selectedDate
       );
       this.gamesArray = [];
@@ -56,12 +57,17 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
     switch (this.feedUrl) {
       case 'daily_game_schedule':
         url = this.baseUrl + this.dailyGameScheduleUrl + this.selectedDate;
-        const dailySchedSubscription = this.dataService.getFeed(url)
+        const dailySchedSubscription = this.dataService
+          .getFeed(url)
           .subscribe(x => {
-            // console.log('ngOnInit() SAYS: this is x -> ', x);
+            console.log('loadData() SAYS: this is x -> ', x);
             for (const schedule of x.dailygameschedule.gameentry) {
-              this.homeSrc = this.mlbIconService.getIcon(schedule.homeTeam.Abbreviation);
-              this.awaySrc = this.mlbIconService.getIcon(schedule.awayTeam.Abbreviation);
+              this.homeSrc = this.mlbIconService.getIcon(
+                schedule.homeTeam.Abbreviation
+              );
+              this.awaySrc = this.mlbIconService.getIcon(
+                schedule.awayTeam.Abbreviation
+              );
               const nfo: IScoreboard = {
                 id: schedule.id,
                 date: schedule.date,
@@ -88,7 +94,7 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
                 isInProgress: null,
                 isCompleted: null,
                 playStatus: null,
-                gameSummary: [],
+                gameSummary: []
               };
               this.gamesArray.push(nfo);
             }
@@ -100,25 +106,36 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
         const scoreBoardSubscription = this.dataService
           .getFeed(url)
           .subscribe(x => {
-            // console.log('ngOnInit() SAYS: this is x -> ', x);
-            for (let i = 0;  x.scoreboard.inningSummary.length < i; i++) {
-              const inningInfo: IGameSummary = {
-                inningNumber: x.scoreboard.inningSummary.inning[i]['@number'],
-                awayScore: x.scoreboard.inningSummary.inning[i].awayScore,
-                homeScore: x.scoreboard.inningSummary.inning[i].homeScore,
-              };
-              this.gameInnings.push(inningInfo);
-            }
+            console.log('loadData() SAYS: this is x -> ', x);
             for (const gameScore of x.scoreboard.gameScore) {
-              this.homeSrc = this.mlbIconService.getIcon(gameScore.game.homeTeam.Abbreviation);
-              this.awaySrc = this.mlbIconService.getIcon(gameScore.game.awayTeam.Abbreviation);
+              this.homeSrc = this.mlbIconService.getIcon(
+                gameScore.game.homeTeam.Abbreviation
+              );
+              this.awaySrc = this.mlbIconService.getIcon(
+                gameScore.game.awayTeam.Abbreviation
+              );
+              // console.log ('This is the gameScore inningSummary ==> ', gameScore.inningSummary.inning);
+              this.gameInnings = [];
+              for (const i of gameScore.inningSummary.inning ) {
+                // console.log('This i[@number] #####--->>> ', i['@number']);
+                // console.log('This i.awayScore #####--->>> ', i.awayScore);
+                // console.log('This i.homeScore #####--->>> ', i.homeScore);
+                const inningInfo: IGameSummary = {
+                  inningNumber: i['@number'],
+                  awayScore: i.awayScore,
+                  homeScore: i.homeScore
+                };
+                this.gameInnings.push(inningInfo);
+              }
+              console.log('This is gameInnings[]--->>> ', this.gameInnings);
               const nfo: IScoreboard = {
                 id: gameScore.game.ID,
                 date: gameScore.game.date,
                 time: gameScore.game.time,
                 lastUpdatedOn: x.scoreboard.lastUpdatedOn,
                 scheduleStatus: gameScore.game.scheduleStatus,
-                delayedOrPostponedReason: gameScore.game.delayedOrPostponedReason,
+                delayedOrPostponedReason:
+                  gameScore.game.delayedOrPostponedReason,
                 originalDate: gameScore.game.originalDate,
                 originalTime: gameScore.game.originalTime,
                 homeTeamId: gameScore.game.homeTeam.ID,
@@ -138,7 +155,7 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
                 isInProgress: gameScore.isInProgress,
                 isCompleted: gameScore.isCompleted,
                 playStatus: gameScore.playStatus,
-                gameSummary: this.gameInnings,
+                gameSummary: this.gameInnings
               };
               this.gamesArray.push(nfo);
             }
@@ -148,9 +165,9 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
       default:
         break;
     }
-    console.log('ngOnInit() SAYS: this is gamesArray -> ', this.gamesArray);
+    console.log('loadData SAYS: this is gamesArray -> ', this.gamesArray);
   }
-compareDates() {
+  compareDates() {
     // tslint:disable-next-line: radix
     const selDay = parseInt(this.selectedDate.substr(6, 2));
     // tslint:disable-next-line: radix
