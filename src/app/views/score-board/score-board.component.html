@@ -1,3 +1,23 @@
-<p>
-  score-board works!
-</p>
+<div fxLayout="row wrap" fxLayout.xs="column" fxLayoutGap="0.5%" fxLayoutAlign="center">
+  <mat-card class="cardTeam" *ngFor='let score of gamesArray'>
+    <mat-card-header>
+    </mat-card-header>
+    <div>
+      <a>
+        <img src='{{score.homeTeamIcon}}' style="width: 6rem; height: 5rem; padding: 1rem; border-radius: 2rem;">
+      </a>
+      <a>
+        <img src='{{score.awayTeamIcon}}' style="width: 6rem; height: 5rem; padding: 1rem; border-radius: 2rem;">
+      </a>
+    </div>
+    <mat-card-header>
+      <mat-card-actions>
+        <a mat-button>
+          <h3 >
+            {{score.homeTeamAbbreviation}} -{{score.homeScore}}- {{score.awayTeamAbbreviation}} -{{score.awayScore}}-
+          </h3>
+        </a>
+      </mat-card-actions>
+    </mat-card-header>
+  </mat-card>
+</div>

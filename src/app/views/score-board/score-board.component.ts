@@ -33,14 +33,17 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.gamesArray = [];
+    console.log('LOADDATA() SAYS: GAMES ARRAY1-> ', this.gamesArray);
     this.gameInnings = [];
     const dateSubscription = this.dateService.dateValue.subscribe(date => {
+      console.log('Score-Board ngOinit() SAYS ->>>>', date);
       this.selectedDate = date;
       console.log(
         'ScoreBoard ngOnInit() SAYS selectedDate is ->',
         this.selectedDate
       );
       this.gamesArray = [];
+      console.log('LOADDATA() SAYS: GAMES ARRAY2-> ', this.gamesArray);
       this.compareDates();
       this.loadData();
     });
@@ -54,6 +57,7 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
     let url = '';
     this.gamesArray = [];
     this.gameInnings = [];
+    console.log('LOADDATA() SAYS: GAMES ARRAY3-> ', this.gamesArray);
     switch (this.feedUrl) {
       case 'daily_game_schedule':
         url = this.baseUrl + this.dailyGameScheduleUrl + this.selectedDate;
@@ -61,6 +65,9 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
           .getFeed(url)
           .subscribe(x => {
             console.log('loadData() SAYS: this is x -> ', x);
+            this.gameInnings = [];
+            this.gamesArray = [];
+            console.log('LOADDATA() SAYS: GAMES ARRAY4-> ', this.gamesArray);
             for (const schedule of x.dailygameschedule.gameentry) {
               this.homeSrc = this.mlbIconService.getIcon(
                 schedule.homeTeam.Abbreviation
@@ -106,7 +113,10 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
         const scoreBoardSubscription = this.dataService
           .getFeed(url)
           .subscribe(x => {
-            console.log('loadData() SAYS: this is x -> ', x);
+            this.gameInnings = [];
+            this.gamesArray = [];
+            // console.log('loadData() SAYS: this is x -> ', x);
+            console.log('LOADDATA() SAYS: GAMES ARRAY5-> ', this.gamesArray);
             for (const gameScore of x.scoreboard.gameScore) {
               this.homeSrc = this.mlbIconService.getIcon(
                 gameScore.game.homeTeam.Abbreviation
@@ -180,11 +190,11 @@ export class ScoreBoardComponent implements OnInit, OnDestroy {
     console.log('compareDatesFormat() Says todaysDate is -> ' + todaysDate);
     const diff = Math.abs(selDate.getTime() - todaysDate.getTime()) / 3600000;
     console.log('The Diff IS ' + diff + ' HOURS');
-    if (diff <= 24) {
-      // console.log('The winner is -> daily_game_schedule = ');
+    if (diff <= 24 || selDate.getTime() >= todaysDate.getTime()) {
+      console.log('The winner is -> daily_game_schedule');
       this.feedUrl = 'daily_game_schedule';
     } else {
-      // console.log('The winner is -> scoreboard');
+      console.log('The winner is -> scoreboard');
       this.feedUrl = 'scoreboard';
     }
   }
